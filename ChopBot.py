@@ -17,9 +17,6 @@ from aiogram.types import (
     ReplyKeyboardRemove,
 )
 
-#
-# bot = Bot(token='6908559354:AAG0PcDJfS0GQP91ScQpVL5Sh5HHxDbJmq4')
-# dp = Dispatcher()
 
 form_router = Router()
 
