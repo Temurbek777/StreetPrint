@@ -239,7 +239,7 @@ async def process_pages(message: Message, state: FSMContext) -> None:
     print(data)
     options['copies'] = data['copies']
     options['media'] = 'A4'
-    options['orientation-requested'] = data['orientation-requested']
+    options['orientation-requested'] = str(data['orientation-requested'])
     options['page-ranges'] = data['page-ranges']
     options['number-up'] = data['number-up']
     print(options)
@@ -256,6 +256,6 @@ async def final_print(message: Message) -> None:
         reply_markup=ReplyKeyboardRemove(),
     )
     #print(route)
-    job_id = conn.printFile(printer_name, route, "Test Print", {})
+    job_id = conn.printFile(printer_name, route, "Test Print", options=options)
     print(job_id)
 #--------------------------------------------------------------------------------------------------

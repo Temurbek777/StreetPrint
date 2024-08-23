@@ -10,7 +10,7 @@ langs = ReplyKeyboardMarkup(
             ]
         ],
         resize_keyboard=True,
-    ),
+    )
 
 
 chop_uz = ReplyKeyboardMarkup(
@@ -21,7 +21,7 @@ chop_uz = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 chop_rus = ReplyKeyboardMarkup(
             keyboard=[
@@ -31,7 +31,7 @@ chop_rus = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 chop_en = ReplyKeyboardMarkup(
             keyboard=[
@@ -41,7 +41,7 @@ chop_en = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 orient_uzb = ReplyKeyboardMarkup(
             keyboard=[
@@ -51,7 +51,7 @@ orient_uzb = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 orient_rus = ReplyKeyboardMarkup(
             keyboard=[
@@ -61,7 +61,7 @@ orient_rus = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 orient_en = ReplyKeyboardMarkup(
             keyboard=[
@@ -71,7 +71,7 @@ orient_en = ReplyKeyboardMarkup(
                 ]
             ],
             resize_keyboard=True,
-        ),
+        )
 
 final_chop_uz = ReplyKeyboardMarkup(
                 keyboard=[
@@ -81,7 +81,7 @@ final_chop_uz = ReplyKeyboardMarkup(
                     ]
                 ],
                 resize_keyboard=True,
-            ),
+            )
 
 final_chop_rus = ReplyKeyboardMarkup(
                 keyboard=[
@@ -91,7 +91,7 @@ final_chop_rus = ReplyKeyboardMarkup(
                     ]
                 ],
                 resize_keyboard=True,
-            ),
+            )
 
 final_chop_en = ReplyKeyboardMarkup(
                 keyboard=[
@@ -101,4 +101,4 @@ final_chop_en = ReplyKeyboardMarkup(
                     ]
                 ],
                 resize_keyboard=True,
-            ),
+            )
