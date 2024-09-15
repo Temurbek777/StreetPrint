@@ -4,13 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02b869f5-99e5-439c-9cbe-527569bc1084" name="Changes" comment="ChopBot2.0">
-      <change afterPath="$PROJECT_DIR$/File.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Converter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/converted.pdf/File.pdf" afterDir="false" />
+    <list default="true" id="02b869f5-99e5-439c-9cbe-527569bc1084" name="Changes" comment="ChoptBot2.0">
+      <change afterPath="$PROJECT_DIR$/Documents/File.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documents/File.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documents/File.pptx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documents/File.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documents/File.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos/File.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos/File.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/File.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/File.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChopBot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/File.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/File.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/File.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Print.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Converter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/handlers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/keyboards.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/keyboards.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/converted/File.pdf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,13 +236,23 @@
       <option name="project" value="LOCAL" />
       <updated>1724447630811</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="ChoptBot2.0">
+      <option name="closed" value="true" />
+      <created>1726396251754</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1726396251754</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="ChopBot1.0" />
     <MESSAGE value="ChopBot2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="ChopBot2.0" />
+    <MESSAGE value="ChoptBot New File types added" />
+    <MESSAGE value="ChoptBot2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="ChoptBot2.0" />
   </component>
 </project>

@@ -16,8 +16,8 @@ langs = ReplyKeyboardMarkup(
 chop_uz = ReplyKeyboardMarkup(
             keyboard=[
                 [
-                    KeyboardButton(text="/chop"),
-                    KeyboardButton(text="/sozlamalar"),
+                    KeyboardButton(text="/Chop_qilish"),
+                    KeyboardButton(text="/ChopBotni_qanday_ishlatish"),
                 ]
             ],
             resize_keyboard=True,

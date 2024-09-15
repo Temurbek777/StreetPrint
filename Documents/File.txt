@@ -1,0 +1,163 @@
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+RF24 radio(7, 8); // CSN, CE
+const byte address[6] = "00001";
+
+int x_pos;
+int y_pos;
+
+
+const int ledPin = 2;
+unsigned long previousMillis = 0;
+const long onInterval = 800;
+const long offInterval = 300;
+boolean ledState = false;
+
+int old, orqa;
+int old_ong, orqa_ong;
+unsigned long timeout;
+bool passive;
+void setup() {
+  pinMode(3,OUTPUT);
+  pinMode(5,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(2,OUTPUT);
+  radio.begin();
+  radio.openReadingPipe(1, address);
+  radio.setPALevel(RF24_PA_MIN);
+  radio.startListening();
+  Serial.begin(9600);
+}
+
+void loop() {
+  if(timeout < millis() && !passive){
+    passive = true;
+    analogWrite(6,0);
+    analogWrite(9,0);
+    analogWrite(3,0);
+    analogWrite(5,0);
+  }
+  if (radio.available()) {
+    passive = false;
+    timeout = millis() + 500;
+    int data[2];
+    radio.read(&data, sizeof(data));
+     old = (data[0]/2-255)*(-1);
+     orqa = (data[0]/2-256);
+
+     if(old <= 10)
+     {
+      old = 0;
+     }
+     if(orqa <= 10)
+     {
+      orqa = 0;
+     }
+
+     if(old >= 10 && old <= 130)
+     {
+      old = 130;
+     }
+     if(orqa >= 10 && orqa <= 130)
+     {
+      orqa = 130;
+     }
+
+
+
+
+
+     if(old >= 10)
+     {
+      orqa = 0;
+     }
+     if(orqa >= 10)
+     {
+      old = 0;
+     }
+      // Serial.print("old: ");
+      // Serial.println(old);
+      // Serial.print("orqa: ");
+      // Serial.println(orqa);
+
+    analogWrite(3,old);
+
+    analogWrite(5,orqa);
+//////==============================================
+ old_ong = (data[1]/2-255)*(-1);
+     orqa_ong = (data[1]/2-256);
+
+     if(old_ong <= 10)
+     {
+      old_ong = 0;
+     }
+     if(orqa_ong <= 10)
+     {
+      orqa_ong = 0;
+     }
+
+     if(old_ong >= 10 && old_ong <= 130)
+     {
+      old_ong = 130;
+     }
+     if(orqa_ong >= 10 && orqa_ong <= 130)
+     {
+      orqa_ong = 130;
+     }
+
+
+
+
+
+     if(old_ong >= 10)
+     {
+      orqa_ong = 0;
+     }
+     if(orqa_ong >= 10)
+     {
+      old_ong = 0;
+     }
+      // Serial.print("old_ong: ");
+      // Serial.println(old_ong);
+      // Serial.print("orqa_ong: ");
+      // Serial.println(orqa_ong);
+
+    analogWrite(6,old_ong);
+
+    analogWrite(9,orqa_ong);
+    
+
+
+
+
+  }
+ delay(10); 
+ unsigned long currentMillis = millis();
+
+  if (ledState) {
+    if (currentMillis - previousMillis >= onInterval) {
+      ledState = false;
+      previousMillis = currentMillis;
+      digitalWrite(ledPin, LOW);
+    }
+  } else {
+    if (currentMillis - previousMillis >= offInterval) {
+      ledState = true;
+      previousMillis = currentMillis;
+      digitalWrite(ledPin, HIGH);
+    }
+  }
+}
+
+
+
+//data2 = data[0]/2-255)*(-1);
+
+
+
+
+
+

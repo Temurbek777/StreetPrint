@@ -11,7 +11,9 @@ from aiogram.types import (
 import app.keyboards as kb
 from create_bot import TOKEN, bot
 from docx2pdf import convert
-from .Converter import convert_docx_to_pdf
+from .Converter import convert_docx_to_pdf,convert_pptx_to_pdf,convert_image_to_pdf
+import pandas as pd
+import pdfkit
 import requests
 import cups
 import os
@@ -46,7 +48,7 @@ class Form(StatesGroup):
 async def command_start(message: Message, state: FSMContext) -> None:
     await state.set_state(Form.language)
     # await message.answer("Choose the language", reply_markup=ReplyKeyboardRemove())
-    await message.answer("Choose the language", reply_markup=kb.langs
+    await message.answer(text='Tilni tanlang\nВыберите язык\nChoose the language', reply_markup=kb.langs
                          )
 #----------------------------------------------------------------------------------------------
 
@@ -82,7 +84,7 @@ async def command_print(message: Message, state: FSMContext) -> None:
 
 
 #------------------------------CHOP(UZB)--------------------------------------------------
-@form_router.message(Command("chop"))
+@form_router.message(Command("Chop_qilish"))
 async def command_print(message: Message, state: FSMContext) -> None:
     await state.set_state(Form.file)
     await state.update_data(command=message.text)
@@ -111,7 +113,7 @@ async def process_file(message: Message, state: FSMContext) -> None:
     if message.document:
         await state.update_data(file=message.document.file_name)
         await state.set_state(Form.copy)
-
+        await message.reply("Iltmos kuting!")
         file_id = message.document.file_id
         file_info = await bot.get_file(file_id)
         file_path = file_info.file_path
@@ -120,27 +122,65 @@ async def process_file(message: Message, state: FSMContext) -> None:
         download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
         # print(download_url)
         res = requests.get(download_url)
-        print(res.content)
+#==============================IF FILE DOWNLOADED SUCCESSFULLY=============================
         if res.status_code == 200:
+#==============================IF FILE FORMAT IS ============== PDF ======================================
             if file_extension == 'pdf':
-                with open('File.pdf', 'wb') as file:
+                directory = 'Documents'
+                file_name = "File.pdf"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
                     file.write(res.content)
                     print("File downloaded")
                     global route
-                    route = os.path.abspath('File.pdf')
+                    route = file_path
+#==============================IF FILE FORMAT IS ============== DOCX ======================================
             elif file_extension == 'docx':
-                with open('File.docx', 'wb') as file:
+                directory = 'Documents'
+                file_name = "File.docx"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
                     file.write(res.content)
                     print("File downloaded")
-                    route = os.path.abspath('File.docx')
-                    convert_docx_to_pdf(route, '/home/temurbek/PycharmProjects/Chop/converted')
-                    route = "/home/temurbek/PycharmProjects/Chop/converted/File.pdf"
+                    # route = os.path.abspath('File.docx')
+                    convert_docx_to_pdf(file_path, '/home/temurbek/PycharmProjects/Chop/Documents/')
+                    route = "/home/temurbek/PycharmProjects/Chop/Documents/File.pdf"
+#==============================IF FILE FORMAT IS ============== TXT ======================================
             elif file_extension == 'txt':
-                with open('File.txt', 'wb') as file:
+                directory = 'Documents'
+                file_name = "File.txt"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
                     file.write(res.content)
                     print("File downloaded")
-                    route = os.path.abspath('File.txt')
+                    route = file_path
                     print(route)
+#==============================IF FILE FORMAT IS ============== XLSX ======================================
+            elif file_extension == 'xlsx':
+                directory = 'Documents'
+                file_name = "File.xlsx"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                    # route = os.path.abspath('File.xlsx')
+                    # print(route)
+                    df = pd.read_excel(file_path)
+                    html = df.to_html()
+                    pdfkit.from_string(html, '/home/temurbek/PycharmProjects/Chop/Documents/File.pdf')
+                    route = '/home/temurbek/PycharmProjects/Chop/Documents/File.pdf'
+#==============================IF FILE FORMAT IS ============== PPTX ======================================
+            elif file_extension == 'pptx':
+                directory = 'Documents'
+                file_name = "File.pptx"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                    # route = os.path.abspath('File.pptx')
+                    # print(route)
+                    convert_pptx_to_pdf(file_path, '/home/temurbek/PycharmProjects/Chop/Documents/File.pdf')
+                    route = "/home/temurbek/PycharmProjects/Chop/Documents/File.pdf"
 
         else:
             print("Failed to download the file")
@@ -157,21 +197,29 @@ async def process_file(message: Message, state: FSMContext) -> None:
         file_id = message.photo[-1].file_id
         file_info = await bot.get_file(file_id)
         file_path = file_info.file_path
+        file_extension = file_path.split('.')[-1]
         print(file_path)
+        print(file_extension)
         download_file = await bot.download_file(file_path)
-        # download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
+        download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
         print(download_file)
-        # res = requests.get(download_url)
-        # print(res.content)
-        # if res.status_code == 200:
-        #     with open('File.pdf', 'wb') as file:
-        #         file.write(res.content)
-        #         print("File downloaded")
-        # else:
-        #     print("Failed to download the file")
-        # global route
-        # route = os.path.abspath('File.pdf')
-        #  print(route)
+        res = requests.get(download_url)
+        if res.status_code == 200:
+            if file_extension == "jpg" or file_extension == "png":
+                directory = 'Photos'
+                file_name = "File.jpg"
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                route = "/home/temurbek/PycharmProjects/Chop/Photos/File.jpg"
+                print(route)
+                route = convert_image_to_pdf(route)
+                print(route)
+
+        else:
+            print("Failed to download the file")
+
 
 
     data = await state.get_data()
