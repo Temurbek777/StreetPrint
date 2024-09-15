@@ -10,6 +10,8 @@ from aiogram.types import (
 )
 import app.keyboards as kb
 from create_bot import TOKEN, bot
+from docx2pdf import convert
+from .Converter import convert_docx_to_pdf
 import requests
 import cups
 import os
@@ -104,29 +106,75 @@ async def command_print(message: Message, state: FSMContext) -> None:
 
 
 #--------------------------------DOCUMENT PROCESS------------------------------------------
-@form_router.message(F.document, Form.file)
+@form_router.message(F.document | F.photo, Form.file)
 async def process_file(message: Message, state: FSMContext) -> None:
-    await state.update_data(file=message.document.file_name)
-    await state.set_state(Form.copy)
+    if message.document:
+        await state.update_data(file=message.document.file_name)
+        await state.set_state(Form.copy)
+
+        file_id = message.document.file_id
+        file_info = await bot.get_file(file_id)
+        file_path = file_info.file_path
+        file_extension = message.document.file_name.split('.')[-1]
+        print(file_extension)
+        download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
+        # print(download_url)
+        res = requests.get(download_url)
+        print(res.content)
+        if res.status_code == 200:
+            if file_extension == 'pdf':
+                with open('File.pdf', 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                    global route
+                    route = os.path.abspath('File.pdf')
+            elif file_extension == 'docx':
+                with open('File.docx', 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                    route = os.path.abspath('File.docx')
+                    convert_docx_to_pdf(route, '/home/temurbek/PycharmProjects/Chop/converted')
+                    route = "/home/temurbek/PycharmProjects/Chop/converted/File.pdf"
+            elif file_extension == 'txt':
+                with open('File.txt', 'wb') as file:
+                    file.write(res.content)
+                    print("File downloaded")
+                    route = os.path.abspath('File.txt')
+                    print(route)
+
+        else:
+            print("Failed to download the file")
+
+
+        #  print(route)
+#=============================IF THE FILE PHOTO===============================================
+    elif message.photo:
+        file_id = message.photo[-1].file_id  # Highest resolution
+        print(file_id)
+        await state.update_data(file=message.photo[-1].file_id)
+        await state.set_state(Form.copy)
+
+        file_id = message.photo[-1].file_id
+        file_info = await bot.get_file(file_id)
+        file_path = file_info.file_path
+        print(file_path)
+        download_file = await bot.download_file(file_path)
+        # download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
+        print(download_file)
+        # res = requests.get(download_url)
+        # print(res.content)
+        # if res.status_code == 200:
+        #     with open('File.pdf', 'wb') as file:
+        #         file.write(res.content)
+        #         print("File downloaded")
+        # else:
+        #     print("Failed to download the file")
+        # global route
+        # route = os.path.abspath('File.pdf')
+        #  print(route)
+
 
     data = await state.get_data()
-    file_id = message.document.file_id
-    file_info = await bot.get_file(file_id)
-    file_path = file_info.file_path
-    print(file_path)
-    download_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
-    print(download_url)
-    res = requests.get(download_url)
-    print(res)
-    if res.status_code == 200:
-        with open('File.pdf', 'wb') as file:
-            file.write(res.content)
-            print("File downloaded")
-    else:
-        print("Failed to download the file")
-    global route
-    route = os.path.abspath('File.pdf')
-    #  print(route)
     if data['lang'] == 'UZB':
         await message.answer(
             f"Nusxalar sonini kiriting"
@@ -252,7 +300,7 @@ async def process_pages(message: Message, state: FSMContext) -> None:
 @form_router.message(Command('Chop'))
 async def final_print(message: Message) -> None:
     await message.answer(
-        f"Iltmos kuting{options}",
+        f"Iltmos kuting",
         reply_markup=ReplyKeyboardRemove(),
     )
     #print(route)
